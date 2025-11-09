@@ -2,6 +2,10 @@ body {
   background-color: #0A0519;
 }
 
+:root {
+        --avatar-size: 100px;
+}
+
 /* ======== TRES EN RAYA ======== */
 .cell {
     background: #17122A;
@@ -32,58 +36,101 @@ body {
   justify-content: center; 
 }
 
-#header {
-    display: flex;
-    width: 480px;
-    justify-content: space-between;
-    margin: 0 auto 50px; 
-    align-items: center; 
+#header{
+    display:flex;
+    width:500px;
+    justify-content:space-between;
+    margin:0 auto 30px;
+    align-items:center;
 }
-#header .player {
-    background: #17122A;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    border-radius: 12px;
-    border: solid 4px #17122A;
-    opacity: 0.5;
-    transition: 0.3s;
+#header .player{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
 }
-#header .player:hover {
-    border: solid 4px #2A2343;
-}
-#header .player-active {
-    opacity: 1;
-    border: solid 4px #2A2343;
-}
-#header #xPlayerDisplay {
-    color: #1892EA;
-}
-#header #oPlayerDisplay {
-    color: #a737ff;
+#header .avatar{
+    width:var(--avatar-size);
+    height:var(--avatar-size);
+    border-radius:50%;
+    background:#17122A;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid rgba(255,255,255,0.04);
+    color:inherit;
+    font-weight:800;
+    /* scale SVG/background to fill the circle */
+    background-size: cover;
+    background-position: center;
 }
 
-#restartBtn {
-    margin-top: 30px;
-    width: 400px;
+#header .avatar img.avatar-img{
+    /* keep the <img> as markup fallback but hide it visually; we use container background */
+    display: none;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    object-fit: cover;
+    border-radius: 50%;
+}
+#header .player-name{
+    font-size:12px;
+    color:rgba(255,255,255,0.7);
+    letter-spacing:1px;
+    font-weight:700;
+}
+
+#xPlayerDisplay{ color:#1892EA; font-size:32px;}
+#oPlayerDisplay{ color:#A737FF; font-size:32px;}
+
+#scoreboard{ display:flex; align-items:center; gap:18px; }
+#scoreboard .score{ font-size:28px; font-weight:900; color:#FFFFFF; }
+#scoreboard .score-sep{ color:rgba(255,255,255,0.6); font-weight:900; }
+
+#matchInfo{ display:flex; gap:12px; align-items:center; }
+
+#matchInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#matchInfo > div {
     color: #ffffff;
-    background-color: #17122A;
+    font-weight: 600;
+}
+#moveCount {
+    background: #17122A;
     padding-top: 20px;
     padding-bottom: 20px;
-    border: none;
     border-radius: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s background;
+    min-width: 160px;
+    text-align: center;
 }
-#restartBtn:hover {
+#timer {
+    background: #17122A;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 12px;
+    min-width: 80px;
+    text-align: center;
+}
+#matchInfo button {
+    margin-left: 6px;
+    background: #17122A;
+    color: #fff;
+    border: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 120px;
+    cursor: pointer;
+}
+#matchInfo button:hover {
     background-color:#2A2343;
+    transition: 0.3s background;
 }
 
 h2, p {
