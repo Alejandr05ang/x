@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <title>TRES EN RAYA</title>
 </head>
-
-<html>
 
     <body>
         <section id="game-section" class="animar">
@@ -43,12 +44,21 @@
 
             <p id="statusText"></p>
 
-            <div id="matchInfo" style="margin-top:12px; display:flex; gap:12px; align-items:center;">
+            <div id="matchInfo">
                 <div id="moveCount">Movimientos: 0</div>
                 <div id="timer">00:00</div>
-                <div style="margin-left:8px">
-                    <button id="rematchBtn">Revancha</button>
-                    <button id="newGameBtn">Nuevo juego</button>
+                <button id="rematchBtn">Revancha</button>
+                <button id="newGameBtn">Nuevo juego</button>
+                <a href="historial.html">
+                    <button id="historialBtn">Historial</button>
+                </a>
+            </div>
+
+            <div id="avatarModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeAvatarModal()">&times;</span>
+                    <h3>Selecciona el Avatar para <span id="playerLabel"></span></h3>
+                    <div id="avatarOptionsContainer"></div>
                 </div>
             </div>
 
@@ -57,6 +67,7 @@
     </body>
 
     <footer>
+        <script src="js/storage.js"></script>
         <script src="js/game.js"></script>
     </footer>
 </html>

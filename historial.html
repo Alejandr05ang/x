@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/historial.css">
+    <title>Historial - Tres en Raya</title>
+</head>
+<body>
+    <div class="historial-container">
+        <div class="historial-header">
+            <h1>Historial de Partidas</h1>
+            <p>Revisa todas las partidas jugadas</p>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="estadisticas" id="estadisticas">
+            <!-- Se llenará con JavaScript -->
+        </div>
+
+        <!-- Filtros -->
+        <div class="filtros-container">
+            <div class="filtro-group">
+                <label for="filtroGanador">Filtrar por ganador:</label>
+                <select id="filtroGanador">
+                    <option value="Todos">Todos</option>
+                    <option value="J1">Jugador 1</option>
+                    <option value="J2">Jugador 2</option>
+                    <option value="Empate">Empate</option>
+                </select>
+            </div>
+
+            <div class="filtro-group">
+                <label for="fechaInicio">Desde:</label>
+                <input type="date" id="fechaInicio">
+            </div>
+
+            <div class="filtro-group">
+                <label for="fechaFin">Hasta:</label>
+                <input type="date" id="fechaFin">
+            </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="acciones-container">
+            <button class="btn btn-primary" onclick="aplicarFiltros()">
+                Aplicar Filtros
+            </button>
+            <button class="btn btn-success" onclick="exportarHistorial()">
+                Exportar JSON
+            </button>
+            <button class="btn btn-danger" onclick="limpiarHistorial()">
+                Limpiar Historial
+            </button>
+        </div>
+
+        <div class="tabla-historial">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Jugador 1</th>
+                        <th>Jugador 2</th>
+                        <th>Ganador</th>
+                        <th>Duración</th>
+                        <th>Movs.</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="btn btn-primary btn-volver">Volver al juego</a>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/historial.js"></script>
+</body>
+</html>

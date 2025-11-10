@@ -1,0 +1,203 @@
+.historial-container {
+    font-family: "Popins", sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.historial-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.historial-header h1 {
+    color: #1892EA;
+    margin-bottom: 10px;
+}
+
+.filtros-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.filtro-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filtro-group label {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.filtro-group select,
+.filtro-group input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #2a2a2a;
+    color: white;
+    font-size: 14px;
+}
+
+.acciones-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #1892EA;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1578c7;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #d32f2f;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #b71c1c;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: #4caf50;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #388e3c;
+    transform: translateY(-2px);
+}
+
+.estadisticas {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    text-align: center;
+}
+
+.estadistica-item {
+    padding: 10px;
+}
+
+.estadistica-item .valor {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1892EA;
+}
+
+.estadistica-item .label {
+    font-size: 14px;
+    color: #999;
+    margin-top: 5px;
+}
+
+.tabla-historial {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: rgba(24, 146, 234, 0.2);
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    color: #1892EA;
+    border-bottom: 2px solid #1892EA;
+}
+
+td {
+    color: #ffffff;
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ganador-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ganador-j1 {
+    background: #1892EA;
+    color: white;
+}
+
+.ganador-j2 {
+    background: #A737FF;
+    color: white;
+}
+
+.ganador-empate {
+    background: #666;
+    color: white;
+}
+
+.no-datos {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 18px;
+}
+
+.btn-volver {
+    display: inline-block;
+    margin: 20px auto;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .tabla-historial {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}

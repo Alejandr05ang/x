@@ -24,14 +24,30 @@ let timerInterval = null;
 let startTime = null;
 let elapsedMs = 0;
 const avatarOptions = [
+    'assets/players/batman.svg',
+    'assets/players/musulman.svg',
+    'assets/players/robot.svg',
+    'assets/players/saw.svg',
+    'assets/players/stalin.svg',
+    'assets/players/tesla.svg',
+    'assets/players/trump.svg',
     'assets/players/user1.svg',
-    'assets/players/user2.svg',
-    'assets/players/user3.svg'
+    'assets/players/user2.svg'
 ];
-let avatarX = avatarOptions[0];
-let avatarO = avatarOptions[1];
+let avatarX = avatarOptions[7];
+let avatarO = avatarOptions[8];
+let finalChoiceX = avatarX;
+let finalChoiceO = avatarO;
+let avatarSelecting = null; 
 let xWins = 0;
 let oWins = 0;
+
+function getPlayerName(player){
+    const sel = player === 'X' ? '#xPlayerDisplay .player-name' : '#oPlayerDisplay .player-name';
+    const el = document.querySelector(sel);
+    if(el && el.textContent && el.textContent.trim() !== '') return el.textContent.trim();
+    return player === 'X' ? 'JUGADOR1' : 'JUGADOR2';
+}
 
 initializeGame();
 
@@ -39,7 +55,7 @@ function initializeGame(){
     cells.forEach(cell => cell.addEventListener("click", cellClicked));
     if(rematchBtn) rematchBtn.addEventListener('click', rematchGame);
     if(newGameBtn) newGameBtn.addEventListener('click', newGame);
-    statusText.textContent = `Turno de ${currentPlayer}`;
+    statusText.textContent = `Turno de ${getPlayerName(currentPlayer)}`;
     updateActivePlayerUI();
     resetMatchState();
     updateScoreboard();
@@ -47,10 +63,8 @@ function initializeGame(){
     const avatarOEl = document.getElementById('avatarO');
     const nameXEl = document.getElementById('nameX');
     const nameOEl = document.getElementById('nameO');
-    if(avatarXEl) avatarXEl.src = avatarX;
-    if(avatarOEl) avatarOEl.src = avatarO;
-    if(avatarXEl && avatarXEl.parentElement) avatarXEl.parentElement.style.backgroundImage = `url('${avatarX}')`;
-    if(avatarOEl && avatarOEl.parentElement) avatarOEl.parentElement.style.backgroundImage = `url('${avatarO}')`;
+    if(avatarXEl) setAvatarBackground(avatarXEl, avatarX, avatarOptions[7]);
+    if(avatarOEl) setAvatarBackground(avatarOEl, avatarO, avatarOptions[8]);
     if(nameXEl && nameXEl.textContent.trim() === '') nameXEl.textContent = 'JUGADOR1';
     if(nameOEl && nameOEl.textContent.trim() === '') nameOEl.textContent = 'JUGADOR2';
     running = true;
@@ -81,7 +95,7 @@ function updateCell(cell, index){
 
 function changePlayer(){
     currentPlayer = (currentPlayer == "X") ? "O" : "X";
-    statusText.textContent = `Turno de ${currentPlayer}`;
+    statusText.textContent = `Turno de ${getPlayerName(currentPlayer)}`;
     updateActivePlayerUI();
 }
 
@@ -106,7 +120,7 @@ function checkWinner(){
     }
 
     if(roundWon){
-        statusText.textContent = `Jugador ${currentPlayer} gana!`;
+        statusText.textContent = `${getPlayerName(currentPlayer)} gana!`;
         if(currentPlayer === 'X'){
             xWins++;
         } else {
@@ -115,10 +129,14 @@ function checkWinner(){
         updateScoreboard();
         running = false;
         stopTimer();
+        
+        registrarPartida(currentPlayer === 'X' ? 'jugador1' : 'jugador2');
     } else if(!options.includes("")){
         statusText.textContent = `Empate!`;
         running = false;
         stopTimer();
+        
+        registrarPartida('Empate');
     } else {
         changePlayer();
     }
@@ -132,8 +150,54 @@ function resetMatchState(){
     clearTimerDisplay();
     updateMoveCountUI();
     cells.forEach(cell => { cell.textContent = ""; cell.style.color = ""; });
-    statusText.textContent = `Turno de ${currentPlayer}`;
+    statusText.textContent = `Turno de ${getPlayerName(currentPlayer)}`;
     updateActivePlayerUI();
+}
+
+function openAvatarModal(player) {
+    // show the player's display name (not the letter X/O)
+    document.getElementById('playerLabel').textContent = getPlayerName(player);
+    avatarSelecting = player;
+    const modalEl = document.getElementById('avatarModal');
+    if(modalEl) modalEl.classList.add('modal--open');
+
+    const container = document.getElementById('avatarOptionsContainer');
+    container.innerHTML = '';
+
+    avatarOptions.forEach((avatarPath) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'avatar-option';
+        const img = document.createElement('img');
+        img.src = avatarPath;
+        img.alt = avatarPath.split('/').pop();
+        img.onclick = () => selectAvatar(avatarPath);
+        wrapper.appendChild(img);
+        container.appendChild(wrapper);
+    });
+}
+
+function closeAvatarModal() {
+    const modalEl = document.getElementById('avatarModal');
+    if(modalEl) modalEl.classList.remove('modal--open');
+    if(finalChoiceX && finalChoiceO){
+        avatarX = finalChoiceX;
+        avatarO = finalChoiceO;
+        const avatarXEl = document.getElementById('avatarX');
+        const avatarOEl = document.getElementById('avatarO');
+        if(avatarXEl) setAvatarBackground(avatarXEl, avatarX, avatarOptions[7]);
+        if(avatarOEl) setAvatarBackground(avatarOEl, avatarO, avatarOptions[8]);
+    }
+}
+
+function selectAvatar(selectedAvatarPath){
+    if(avatarSelecting === 'X'){
+        finalChoiceX = selectedAvatarPath;
+        openAvatarModal('O');
+    } else if(avatarSelecting === 'O'){
+        finalChoiceO = selectedAvatarPath;
+        avatarSelecting = null;
+        closeAvatarModal();
+    }
 }
 
 function rematchGame(){
@@ -141,6 +205,7 @@ function rematchGame(){
     resetMatchState();
     running = true;
 }
+
 
 function newGame(){
     stopTimer();
@@ -156,36 +221,34 @@ function newGame(){
     if(nameO !== null && nameO.trim() !== ''){
         if(currentNameOEl) currentNameOEl.textContent = nameO.trim();
     }
-
-    let avatarListText = 'Selecciona avatar por número (Enter para mantener):\n';
-    for(let i = 0; i < avatarOptions.length; i++){
-        const parts = avatarOptions[i].split('/');
-        avatarListText += `${i+1}) ${parts[parts.length-1]}\n`;
-    }
-    const choiceX = prompt('Avatar para jugador X:\n' + avatarListText, '1');
-    const choiceO = prompt('Avatar para jugador O:\n' + avatarListText, '2');
-    const parsedX = parseInt(choiceX, 10);
-    const parsedO = parseInt(choiceO, 10);
-    if(!isNaN(parsedX) && parsedX >= 1 && parsedX <= avatarOptions.length){
-        avatarX = avatarOptions[parsedX-1];
-    }
-    if(!isNaN(parsedO) && parsedO >= 1 && parsedO <= avatarOptions.length){
-        avatarO = avatarOptions[parsedO-1];
-    }
-    const avatarXEl = document.getElementById('avatarX');
-    const avatarOEl = document.getElementById('avatarO');
-    if(avatarXEl) avatarXEl.src = avatarX;
-    if(avatarOEl) avatarOEl.src = avatarO;
-    if(avatarXEl && avatarXEl.parentElement) avatarXEl.parentElement.style.backgroundImage = `url('${avatarX}')`;
-    if(avatarOEl && avatarOEl.parentElement) avatarOEl.parentElement.style.backgroundImage = `url('${avatarO}')`;
-
-    // Reset board for a fresh match; keep wins
+    openAvatarModal('X');
     resetMatchState();
     running = true;
 }
 
+window.onclick = function(event) {
+    const modal = document.getElementById('avatarModal');
+    if (event.target == modal) {
+        closeAvatarModal(); 
+    }
+}
+
 function updateMoveCountUI(){
     if(moveCountDisplay) moveCountDisplay.textContent = `Movimientos: ${moveCount}`;
+}
+
+function setAvatarBackground(imgEl, url, fallback){
+    const tester = new Image();
+    tester.onload = function(){
+        if(imgEl.parentElement) imgEl.parentElement.style.backgroundImage = `url('${url}')`;
+        imgEl.src = url;
+    };
+    tester.onerror = function(){
+        const use = fallback || avatarOptions[7];
+        if(imgEl.parentElement) imgEl.parentElement.style.backgroundImage = `url('${use}')`;
+        imgEl.src = use;
+    };
+    tester.src = url;
 }
 
 function updateScoreboard(){
@@ -246,4 +309,25 @@ function updateActivePlayerUI(){
         oPlayerDisplay.classList.add('player-active');
         xPlayerDisplay.classList.remove('player-active');
     }
+}
+
+
+function registrarPartida(resultado) {
+    if (typeof gameStorage === 'undefined') {
+        console.warn('gameStorage no disponible');
+        return;
+    }
+
+    const partidaData = {
+        jugador1: getPlayerName('X'),
+        jugador2: getPlayerName('O'),
+        ganador: resultado,
+        duracion: elapsedMs,
+        movimientos: moveCount,
+        avatarJ1: avatarX || '',
+        avatarJ2: avatarO || ''
+    };
+
+    gameStorage.registerGame(partidaData);
+    console.log('✅ Partida guardada:', partidaData);
 }
